@@ -48,8 +48,8 @@ export default function ResumePreview() {
   };
 
   return (
-    <section className="flex container items-center justify-center flex-col p-10 gap-4 mx-auto shadow w-fit my-10 rounded-md shadow-slate-200">
-      <h1 className="text-xl">Your Details</h1>
+    <section className="flex container items-center justify-center flex-col p-10 gap-4 mx-auto my-10">
+      <h1 className="text-xl mb-4">Your Details</h1>
       <form className="flex flex-col gap-4">
         <ContactInfoSection />
         <hr className="divider" />
