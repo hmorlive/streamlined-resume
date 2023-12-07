@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1 {
+  @apply text-4xl
+}
+
+h2 {
+  @apply text-xl
+}
+
+.action-btn {
+  @apply px-20 w-full py-3 text-center sm:w-fit bg-orange-700 hover:bg-orange-800 rounded-full text-white text-lg font-bold;
+}
+
+label {
+  @apply my-2 flex flex-col flex-wrap text-xs font-extrabold text-slate-900
+}
+
+input[type=text] {
+  @apply font-normal w-[250px] max-w-[90vw] text-lg border-b-2 border-zinc-200 hover:border-sky-900 focus:border-sky-900 focus:outline-none;
+}
+
+input[type=date] {
+  @apply text-zinc-600 font-normal w-[250px] max-w-[90vw] text-lg border-b-2 border-zinc-200 hover:border-sky-900 focus:border-sky-900 focus:outline-none;
+}
+
+textarea {
+  @apply font-normal w-full max-w-[90vw] text-lg border-2 rounded-md border-zinc-200 hover:border-sky-900 focus:border-sky-900 outline-none focus:outline-none;
+}
+
+.resume-section {
+  @apply uppercase font-light text-xs;
+}
+
+.close-btn {
+  @apply absolute m-4 right-0 top-0;
+}
+
+.divider {
+  @apply w-full border-gray-100;
+}
