@@ -56,7 +56,7 @@ export default function Navigation() {
         ref={headerRef}
         className={`md:mx-auto w-full ${
           isScrolled ? "fixed bg-opacity-95" : null
-        } flex justify-center items-center z-20`}
+        } flex justify-center items-center z-20 bg-white`}
       >
         <nav
           className={`md:container flex items-center w-full p-2 justify-between tracking-tighter`}

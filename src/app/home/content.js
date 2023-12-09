@@ -36,7 +36,7 @@ function CTA() {
             </span>
           </div>
           <h2>
-            Create a streamlined one-page resume to land your dream job, in minutes.
+            Create a streamlined one-page resume in minutes to land your dream job.
           </h2>
           <Link href={"/start"} className="action-btn mt-4">
             Get Started

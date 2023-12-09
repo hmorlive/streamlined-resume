@@ -8,16 +8,16 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ErrorContainer from "./shared/error-container";
 
-//language component
-export default function LanguageSection({
+//skills component
+export default function SkillsSection({
   add,
   remove,
   currentData,
   allowNew = true,
 }) {
-  //manage state of language fields
+  //manage state of skill fields
   const [data, setData] = useState({
-    language: "",
+    skill: "",
     id: uuidv4(),
   });
 
@@ -38,13 +38,13 @@ export default function LanguageSection({
     e.preventDefault();
 
     //validate field is not empty
-    if (data.language.length === 0 || data.language.length > 15) {
+    if (data.skill.length === 0) {
       setError(true);
       return;
     }
     add(data);
     setData({
-      language: "",
+      skill: "",
       id: uuidv4(),
     });
   };
@@ -59,22 +59,18 @@ export default function LanguageSection({
     e.preventDefault();
     remove(id);
   };
-
   return (
     <div className="flex flex-col max-w-[250px]">
-      <h2 className="resume-section mb-2">languages (spoken)</h2>
+      <h2 className="resume-section mb-2">skills</h2>
       {currentData && currentData.length > 0 ? (
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           {currentData.map((data) => (
             <div
               key={data.id}
-              className="flex flex-row flex-wrap w-fit items-center justify-center gap-1 bg-gray-50 font-bold text-xs text-slate-900 p-1 rounded-md"
+              className="flex flex-row flex-wrap w-fit items-center justify-center gap-1 bg-gray-50 font-bold text-xs text-slate-900 p-1 rounded-sm"
             >
-              <span>{data.language}</span>
-              <button
-                onClick={handleRemove(data.id)}
-                aria-label="remove language"
-              >
+              <span>{data.skill}</span>
+              <button onClick={handleRemove(data.id)} aria-label="remove skill">
                 <FontAwesomeIcon icon={faTrashAlt} size="xs" />
               </button>
             </div>
@@ -86,13 +82,14 @@ export default function LanguageSection({
       {allowNew() ? (
         <div className="flex flex-wrap">
           <label>
-            language
+            skill
             <input
               type="text"
-              name="language"
+              name="skill"
               onChange={handleChange}
-              value={data.language}
+              value={data.skill}
               className={`${error ? "!border-red-500" : null}`}
+              maxLength={20}
             />
           </label>
           <button
@@ -100,15 +97,15 @@ export default function LanguageSection({
             className="font-light text-sm text-slate-900 flex items-center justify-center gap-1"
           >
             <FontAwesomeIcon icon={faPlusCircle} />
-            Add Language
+            Add Skill
           </button>
         </div>
       ) : (
-        <span>Max reached (5)</span>
+        <span>Max reached (20)</span>
       )}
       {error && (
         <ErrorContainer
-          error={"language field should not be empty"}
+          error={"skill field should not be empty"}
           resetError={resetError}
         />
       )}

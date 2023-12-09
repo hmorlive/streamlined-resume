@@ -1,12 +1,13 @@
 import {
   faPlusCircle,
-  faTrashAlt,
   faTimes,
+  faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Modal from "./shared/modal";
+import ErrorContainer from "./shared/error-container";
 
 // Projects Component
 export default function ProjectsSection({
@@ -17,6 +18,9 @@ export default function ProjectsSection({
   currentData,
   allowNew = true,
 }) {
+  //manage field errors
+  const [errors, setErrors] = useState({});
+
   //manage state of project fields
   const [data, setData] = useState({
     name: "",
@@ -37,6 +41,7 @@ export default function ProjectsSection({
   //pass to parent array
   const handleAddProject = (e) => {
     e.preventDefault();
+    if (!validateData()) return;
     add(data);
     setData({
       name: "",
@@ -45,17 +50,78 @@ export default function ProjectsSection({
       description: "",
       id: uuidv4(),
     });
-    toggleShowAddEducation(); //close modal
+    toggleShowAddProject(); //close modal
   };
 
+  //validate provided data
+  const validateData = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+    for (const key in data) {
+      if (!isInputValid(key, data[key], newErrors)) {
+        isValid = false;
+      }
+    }
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  //check if given input is valid
+  const isInputValid = (input, value, newErrors) => {
+    if (input === "name" && !value) {
+      newErrors[input] = true;
+      return false;
+    }
+    newErrors[input] = false;
+    return true;
+  };
+
+  //resets error prop
+  const resetErrors = (errorName) => (e) => {
+    e.preventDefault();
+    setErrors({ ...errors, [errorName]: false });
+  };
+
+  //handle removal of element from array
   const handleRemove = (id) => (e) => {
     e.preventDefault();
     remove(id);
   };
   return (
-    <>
+    <div className="flex flex-col w-[250px] max-w-full gap-2">
       <h2 className="resume-section">projects</h2>
-      {currentData && <></>}
+      {currentData.length > 0 ? (
+        currentData.map((data) => (
+          <div className="mb-2 flex flex-col shadow p-2" key={data.id}>
+            <div className="flex flex-wrap gap-1 items-center">
+              <span className="font-bold text-sm my-1">
+                {data.name || null}
+              </span>{" "}
+              <span className="font-light italic text-xs">
+                {" - "}
+                {data.date}
+              </span>
+            </div>
+            <div className="text-xs">
+              <span className="font-light text-sm">
+                {data.description || null}
+              </span>
+            </div>
+            <span className="text-xs">
+              <strong>url</strong>: {data.url}
+            </span>
+            <button
+              onClick={handleRemove(data.id)}
+              className="section-add-btn"
+            >
+              <FontAwesomeIcon icon={faTrashAlt} size="xs" />
+              Remove
+            </button>
+          </div>
+        ))
+      ) : (
+        <span className="empty-section-text">Nothing to show here.</span>
+      )}
       {visible ? (
         <Modal>
           <button
@@ -70,18 +136,25 @@ export default function ProjectsSection({
             project name
             <input
               type="text"
-              name="projectName"
+              name="name"
               required
               maxLength={50}
               onChange={handleChange}
               value={data.name}
+              className={errors.name ? '!border-red-600' : null}
             />
           </label>
+          {errors.name && (
+            <ErrorContainer
+              error={"project name field should not be empty"}
+              resetError={resetErrors("name")}
+            ></ErrorContainer>
+          )}
           <label>
             project date
             <input
               type="date"
-              name="projectDate"
+              name="date"
               required
               maxLength={50}
               onChange={handleChange}
@@ -92,22 +165,22 @@ export default function ProjectsSection({
             project url
             <input
               type="text"
-              name="projectURL"
+              name="url"
               required
               maxLength={50}
               onChange={handleChange}
-              value={data.date}
+              value={data.url}
             />
           </label>
           <label>
             project description
             <textarea
               type="text"
-              name="projectDescription"
+              name="description"
               required
               maxLength={50}
               onChange={handleChange}
-              value={data.date}
+              value={data.description}
             />
           </label>
           <button className="section-part-btn" onClick={handleAddProject}>
@@ -123,6 +196,6 @@ export default function ProjectsSection({
       ) : (
         <span>Max reached (3)</span>
       )}
-    </>
+    </div>
   );
 }

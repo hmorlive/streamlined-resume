@@ -3,10 +3,18 @@ import { useState } from "react";
 import LanguageSection from "./language";
 import ExperienceSection from "./experience";
 import EducationSection from "./education";
+import SkillsSection from "./skills";
+import ContactInfoSection from "./contact";
+import ProjectsSection from "./project";
+import Modal from "./shared/modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 // details needed to generate resume
 export default function ResumeDetails() {
   const [isSubmitting, setIsSubmitting] = useState(false); //manage state of form submission
+  const [promptConfirmation, setPromptConfirmation] = useState(true); //prompt user to confirm if some important sections blank
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false); //state of user confirmation modal
 
   const [showAddExperience, setShowAddExperience] = useState(false); //manage state of add experience modal
   const [showAddEducation, setShowAddEducation] = useState(false); //manage state of add education modal
@@ -29,7 +37,7 @@ export default function ResumeDetails() {
     setUserEducation([...userEducation, data]);
   };
   const addUserProject = (data) => {
-    setUserProject([...data, data]);
+    setUserProject([...userProject, data]);
   };
   const addUserLanguage = (data) => {
     setUserLanguages([...userLanguages, data]);
@@ -37,7 +45,7 @@ export default function ResumeDetails() {
 
   //determine if new allowed
   const shouldAllowNewSkill = () => {
-    return userExperience.length < 20;
+    return userSkills.length < 20;
   };
   const shouldAllowNewExperience = () => {
     return userExperience.length < 3;
@@ -56,7 +64,7 @@ export default function ResumeDetails() {
   const removeSkills = (id) => {
     try {
       const newSkill = userSkills.filter((item) => item.id !== id);
-      setUserExperience(newSkill);
+      setUserSkills(newSkill);
     } catch (error) {
       //later ? log error or display err message, omitting for now
     }
@@ -94,14 +102,36 @@ export default function ResumeDetails() {
     }
   };
 
-  /**
-   *  Submit form for resume generation
-   * @returns true if submission succeeds;false otherwise
-   */
+  const isImportantSectionBlank = () => {
+    if (
+      promptConfirmation &&
+      (userSkills.length === 0 ||
+        userEducation.length === 0 ||
+        userExperience.length === 0 ||
+        userLanguages.length === 0 ||
+        userProject.length === 0)
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  //actually submit the fomr
+  const performSubmission = () => {
+    setIsSubmitting(true);
+  };
+
+  //initiate submission and toggle confirmation
   const submitDetails = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    return true; //if submission succeeds
+    return toggleConfirmationModal();
+  };
+
+  //user acceptance of form
+  const acceptAsIs = () => {
+    setPromptConfirmation(false);
+    toggleConfirmationModal();
+    performSubmission();
   };
 
   //toggles visibility of add modals
@@ -115,10 +145,15 @@ export default function ResumeDetails() {
     setShowAddProject(!showAddProject);
   };
 
+  //toggles visibility of confirmation modal
+  const toggleConfirmationModal = (e) => {
+    setShowConfirmationModal(!showConfirmationModal);
+  };
+
   //loading screen while resume is being generated
   if (isSubmitting) {
     return (
-      <div className="z-20 fixed left-0 top-0 w-full h-full bg-gray-200 bg-opacity-70 flex items-center justify-center">
+      <div className="z-20 fixed left-0 top-0 w-full h-full bg-gray-200 flex items-center justify-center">
         <div className="w-fit px-6 py-4 flex gap-2 items-center justify-center font-light text-slate-900">
           <span className="w-4 h-4 border-l-2 border-slate-900 flex animate-spin rounded-full"></span>
           <span>Generating Resume</span>
@@ -128,48 +163,86 @@ export default function ResumeDetails() {
   }
 
   return (
-    <section className="flex container items-center justify-center flex-col p-10 gap-4 mx-auto my-1">
-      <form className="flex flex-col gap-4">
+    <section className="flex container items-center justify-center flex-col p-4 gap-4 mx-auto my-10 max-w-full flex-wrap box-border">
+      {showConfirmationModal && (
+        <Modal>
+          <button
+            onClick={toggleConfirmationModal}
+            aria-label="close add work experience modal"
+            className="close-btn"
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+          {isImportantSectionBlank() ? (
+            <>
+              <h2 className="border-l-4 pl-2 border-red-700">Warning</h2>
+              <p>One or more important sections have been left blank.</p>
+            </>
+          ) :         <>
+          <h2 className="border-l-4 pl-2 border-green-700">Confirm</h2>
+          <p>Please make sure everything looks correct.</p>
+        </> }
+          <div className="flex flex-wrap gap-4">
+            <button onClick={acceptAsIs} className="action-btn">
+              Accept as is
+            </button>
+            <button
+              onClick={toggleConfirmationModal}
+              className="py-3 px-6 border-black rounded-full border"
+            >
+              Go back
+            </button>
+          </div>
+        </Modal>
+      )}
+      <form className="flex flex-col gap-4 max-w-full" onSubmit={submitDetails}>
         <h1 className="text-xl mb-1 text-left w-full">Your Details</h1>
         <hr className="divider" />
         <ContactInfoSection />
         <hr className="divider" />
-        <ProjectsSection
-          visible={showAddProject}
-          allowNew={shouldAllowNewProject}
-          add={addUserProject}
-          remove={removeProject}
-          toggleShowAddProject={toggleShowAddProject}
-          currentData={userProject}
-        />
+        <div className="flex flex-wrap w-full gap-4">
+          <SkillsSection
+            allowNew={shouldAllowNewSkill}
+            remove={removeSkills}
+            add={addUserSkills}
+            currentData={userSkills}
+          />
+          <LanguageSection
+            allowNew={shouldAllowNewLanguage}
+            remove={removeLanguage}
+            add={addUserLanguage}
+            currentData={userLanguages}
+          />
+        </div>
         <hr className="divider" />
-        <EducationSection
-          visible={showAddEducation}
-          allowNew={shouldAllowNewEducation}
-          add={addUserEducation}
-          remove={removeEducation}
-          toggleShowAddEducation={toggleShowAddEducation}
-          currentData={userEducation}
-        />
-        <hr className="divider" />
-        <ExperienceSection
-          visible={showAddExperience}
-          allowNew={shouldAllowNewExperience}
-          remove={removeExperience}
-          add={addUserExperience}
-          toggleShowAddExperience={toggleShowAddExperience}
-          currentData={userExperience}
-        />
-        <hr className="divider" />
-        <LanguageSection
-          allowNew={shouldAllowNewLanguage}
-          remove={removeLanguage}
-          add={addUserLanguage}
-          currentData={userLanguages}
-        />
+        <div className="flex flex-wrap w-full gap-4">
+          <ProjectsSection
+            visible={showAddProject}
+            allowNew={shouldAllowNewProject}
+            add={addUserProject}
+            remove={removeProject}
+            toggleShowAddProject={toggleShowAddProject}
+            currentData={userProject}
+          />
+          <EducationSection
+            visible={showAddEducation}
+            allowNew={shouldAllowNewEducation}
+            add={addUserEducation}
+            remove={removeEducation}
+            toggleShowAddEducation={toggleShowAddEducation}
+            currentData={userEducation}
+          />
+          <ExperienceSection
+            visible={showAddExperience}
+            allowNew={shouldAllowNewExperience}
+            remove={removeExperience}
+            add={addUserExperience}
+            toggleShowAddExperience={toggleShowAddExperience}
+            currentData={userExperience}
+          />
+        </div>
         <hr className="divider" />
         <button
-          onClick={submitDetails}
           type="submit"
           className="action-btn flex gap-1 items-center justify-center"
         >

@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${font.className} min-h-screen bg-white flex flex-col flex-1 text-zinc-700`}
+        className={`${font.className} min-h-screen bg-white flex flex-col flex-1 text-zinc-700 box-border flex-wrap max-w-full`}
       >
         <Navigation />
         <main className="flex flex-col">{children}</main>
