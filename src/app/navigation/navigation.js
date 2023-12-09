@@ -108,7 +108,7 @@ export default function Navigation() {
               </Link>
               <Link
                 href={"start"}
-                className="py-1 px-6 border-orange-700 bg-orange-700 hover:bg-orange-800 hover:border-orange-800 border text-slate-50 font-bold rounded-full text-base"
+                className="py-2 bg-orange-700 hover:bg-orange-800 text-white rounded-full px-6 font-bold"
               >
                 Get Started
               </Link>

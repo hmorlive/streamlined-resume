@@ -19,15 +19,15 @@ label {
 }
 
 input[type=text] {
-  @apply font-normal w-[250px] max-w-[90vw] text-lg border-b-2 border-zinc-200 hover:border-sky-900 focus:border-sky-900 focus:outline-none;
+  @apply font-normal w-[250px] max-w-[90vw] text-base border-b-2 border-zinc-200 hover:border-sky-900 focus:border-sky-900 focus:outline-none;
 }
 
 input[type=date] {
-  @apply text-zinc-600 font-normal w-[250px] max-w-[90vw] text-lg border-b-2 border-zinc-200 hover:border-sky-900 focus:border-sky-900 focus:outline-none;
+  @apply text-zinc-600 font-normal w-[250px] max-w-[90vw] text-base border-b-2 border-zinc-200 hover:border-sky-900 focus:border-sky-900 focus:outline-none;
 }
 
 textarea {
-  @apply font-normal w-full max-w-[90vw] text-lg border-2 rounded-md border-zinc-200 hover:border-sky-900 focus:border-sky-900 outline-none focus:outline-none;
+  @apply font-normal h-auto w-full max-w-[90vw] text-sm border-2 rounded-md border-zinc-200 hover:border-sky-900 focus:border-sky-900 outline-none focus:outline-none;
 }
 
 .resume-section {
@@ -40,4 +40,20 @@ textarea {
 
 .divider {
   @apply w-full border-gray-100;
+}
+
+.empty-section-text {
+  @apply text-sm font-light
+}
+
+.section-part-btn {
+  @apply text-white bg-orange-700 hover:bg-orange-800 px-6 py-2 rounded-full flex gap-1 items-center justify-center w-fit font-bold text-sm;
+}
+
+.section-add-btn {
+  @apply flex flex-wrap gap-2 items-center justify-center mr-auto text-sm;
+}
+
+.error-container {
+  @apply flex items-center justify-center w-fit h-fit text-red-600 text-xs font-semibold lowercase gap-1 p-1 rounded-md border border-red-600;
 }

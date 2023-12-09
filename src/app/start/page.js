@@ -1,283 +1,181 @@
 "use client";
-import { faPlusCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import LanguageSection from "./language";
+import ExperienceSection from "./experience";
+import EducationSection from "./education";
 
-/**
- * Resume Preview View
- */
-export default function ResumePreview() {
-  const info = {}; // keep track of user info
+// details needed to generate resume
+export default function ResumeDetails() {
+  const [isSubmitting, setIsSubmitting] = useState(false); //manage state of form submission
 
-  //manage state of add experience modal
-  const [showAddExperience, setShowAddExperience] = useState(false);
+  const [showAddExperience, setShowAddExperience] = useState(false); //manage state of add experience modal
+  const [showAddEducation, setShowAddEducation] = useState(false); //manage state of add education modal
+  const [showAddProject, setShowAddProject] = useState(false); //manage state of add project modal
 
-  //manage state of add education modal
-  const [showAddEducation, setShowAddEducation] = useState(false);
+  const [userSkills, setUserSkills] = useState([]); // keep track of user skills
+  const [userExperience, setUserExperience] = useState([]); // keep track of user experience
+  const [userEducation, setUserEducation] = useState([]); // keep track of user education
+  const [userProject, setUserProject] = useState([]); // keep track of user projects
+  const [userLanguages, setUserLanguages] = useState([]); // keep track of user languages
 
-  //manage state of add project modal
-  const [showAddProject, setShowAddProject] = useState(false);
+  //add new user section part
+  const addUserSkills = (data) => {
+    setUserSkills([...userSkills, data]);
+  };
+  const addUserExperience = (data) => {
+    setUserExperience([...userExperience, data]);
+  };
+  const addUserEducation = (data) => {
+    setUserEducation([...userEducation, data]);
+  };
+  const addUserProject = (data) => {
+    setUserProject([...data, data]);
+  };
+  const addUserLanguage = (data) => {
+    setUserLanguages([...userLanguages, data]);
+  };
 
-  const editBasicInfo = (name, title)  => {
-    name ? info.name = name : null;
-    title ? info.title = title : null;
-  }
+  //determine if new allowed
+  const shouldAllowNewSkill = () => {
+    return userExperience.length < 20;
+  };
+  const shouldAllowNewExperience = () => {
+    return userExperience.length < 3;
+  };
+  const shouldAllowNewEducation = () => {
+    return userEducation.length < 3;
+  };
+  const shouldAllowNewProject = () => {
+    return userProject.length < 3;
+  };
+  const shouldAllowNewLanguage = () => {
+    return userLanguages.length < 5;
+  };
+
+  //remove items in sections
+  const removeSkills = (id) => {
+    try {
+      const newSkill = userSkills.filter((item) => item.id !== id);
+      setUserExperience(newSkill);
+    } catch (error) {
+      //later ? log error or display err message, omitting for now
+    }
+  };
+  const removeExperience = (id) => {
+    try {
+      const newExperience = userExperience.filter((item) => item.id !== id);
+      setUserExperience(newExperience);
+    } catch (error) {
+      //later ? log error or display err message, omitting for now
+    }
+  };
+  const removeEducation = (id) => {
+    try {
+      const newEducation = userEducation.filter((item) => item.id !== id);
+      setUserEducation(newEducation);
+    } catch {
+      //later ? log error or display err message, omitting for now
+    }
+  };
+  const removeProject = (id) => {
+    try {
+      const newProject = userProject.filter((item) => item.id !== id);
+      setUserProject(newProject);
+    } catch {
+      //later ? log error or display err message, omitting for now
+    }
+  };
+  const removeLanguage = (id) => {
+    try {
+      const newLanguage = userLanguages.filter((item) => item.id !== id);
+      setUserLanguages(newLanguage);
+    } catch (error) {
+      //later ? log error or display err message, omitting for now
+    }
+  };
 
   /**
-   * toggles experience section
+   *  Submit form for resume generation
+   * @returns true if submission succeeds;false otherwise
    */
+  const submitDetails = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    return true; //if submission succeeds
+  };
+
+  //toggles visibility of add modals
   const toggleShowAddExperience = (e) => {
-    e.preventDefault(); //prevent default submission behavior
     setShowAddExperience(!showAddExperience);
   };
-
-  /**
-   * toggles education section
-   */
   const toggleShowAddEducation = (e) => {
-    e.preventDefault(); //prevent default submission behavior
     setShowAddEducation(!showAddEducation);
   };
-
-  /**
-   * toggles project section
-   */
   const toggleShowAddProject = (e) => {
-    e.preventDefault(); //prevent default submission behavior
     setShowAddProject(!showAddProject);
   };
 
+  //loading screen while resume is being generated
+  if (isSubmitting) {
+    return (
+      <div className="z-20 fixed left-0 top-0 w-full h-full bg-gray-200 bg-opacity-70 flex items-center justify-center">
+        <div className="w-fit px-6 py-4 flex gap-2 items-center justify-center font-light text-slate-900">
+          <span className="w-4 h-4 border-l-2 border-slate-900 flex animate-spin rounded-full"></span>
+          <span>Generating Resume</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <section className="flex container items-center justify-center flex-col p-10 gap-4 mx-auto my-10">
-      <h1 className="text-xl mb-4">Your Details</h1>
+    <section className="flex container items-center justify-center flex-col p-10 gap-4 mx-auto my-1">
       <form className="flex flex-col gap-4">
+        <h1 className="text-xl mb-1 text-left w-full">Your Details</h1>
+        <hr className="divider" />
         <ContactInfoSection />
         <hr className="divider" />
         <ProjectsSection
           visible={showAddProject}
+          allowNew={shouldAllowNewProject}
+          add={addUserProject}
+          remove={removeProject}
           toggleShowAddProject={toggleShowAddProject}
+          currentData={userProject}
         />
         <hr className="divider" />
         <EducationSection
           visible={showAddEducation}
+          allowNew={shouldAllowNewEducation}
+          add={addUserEducation}
+          remove={removeEducation}
           toggleShowAddEducation={toggleShowAddEducation}
+          currentData={userEducation}
         />
         <hr className="divider" />
         <ExperienceSection
           visible={showAddExperience}
+          allowNew={shouldAllowNewExperience}
+          remove={removeExperience}
+          add={addUserExperience}
           toggleShowAddExperience={toggleShowAddExperience}
+          currentData={userExperience}
         />
+        <hr className="divider" />
+        <LanguageSection
+          allowNew={shouldAllowNewLanguage}
+          remove={removeLanguage}
+          add={addUserLanguage}
+          currentData={userLanguages}
+        />
+        <hr className="divider" />
+        <button
+          onClick={submitDetails}
+          type="submit"
+          className="action-btn flex gap-1 items-center justify-center"
+        >
+          Generate Resume
+        </button>
       </form>
-      <hr className="divider" />
-      <button className="action-btn flex gap-1 items-center justify-center">
-        Generate Resume
-      </button>
     </section>
-  );
-}
-
-function ContactInfoSection() {
-  return (
-    <div className="flex w-full flex-wrap gap-10">
-      <div className="flex flex-col">
-        <h2 className="resume-section">basic information</h2>
-        <label>
-          name
-          <input type="text" name="name" required maxLength={50} />
-        </label>
-        <label>
-          title
-          <input type="text" name="title" required maxLength={50} />
-        </label>
-      </div>
-      <div className="flex flex-col">
-        <h2 className="resume-section">contact information</h2>
-        <label>
-          location
-          <input type="text" name="location" required maxLength={50} />
-        </label>
-        <label>
-          email
-          <input type="text" name="email" required maxLength={50} />
-        </label>
-        <label>
-          phone number
-          <input type="text" name="phone" required maxLength={50} />
-        </label>
-        <label>
-          github
-          <input type="text" name="github" required maxLength={50} />
-        </label>
-        <label>
-          website url
-          <input type="text" name="website" required maxLength={50} />
-        </label>
-      </div>
-    </div>
-  );
-}
-
-function ProjectsSection({ visible = false, toggleShowAddProject }) {
-  return (
-    <>
-      <h2 className="resume-section">projects</h2>
-      {visible ? (
-        <>
-          <div className="w-full relative shadow p-4">
-            <button
-              aria-label="close add project modal"
-              onClick={toggleShowAddProject}
-              className="close-btn"
-            >
-              <FontAwesomeIcon
-                icon={faTimes}
-              />
-            </button>
-            <label>
-              project name
-              <input type="text" name="projectName" required maxLength={50} />
-            </label>
-            <label>
-              project date
-              <input type="date" name="projectDate" required maxLength={50} />
-            </label>
-            <label>
-              project url
-              <input type="text" name="projectURL" required maxLength={50} />
-            </label>
-            <label>
-              project description
-              <textarea
-                type="text"
-                name="projectDescription"
-                required
-                maxLength={50}
-              />
-            </label>
-            <button className="text-slate-900 font-extrabold text-sm">
-              Add Project
-            </button>
-          </div>
-        </>
-      ) : (
-        <button
-          className="flex flex-wrap gap-2 items-center justify-center mr-auto"
-          onClick={toggleShowAddProject}
-        >
-          <FontAwesomeIcon icon={faPlusCircle} />
-          Add Project
-        </button>
-      )}
-    </>
-  );
-}
-
-function EducationSection({ visible = false, toggleShowAddEducation }) {
-  return (
-    <>
-      <h2 className="resume-section">education</h2>
-      {visible ? (
-        <>
-          <div className="w-full relative shadow p-4">
-            <button
-              onClick={toggleShowAddEducation}
-              aria-label="close add work education modal"
-              className="close-btn"
-            >
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-            <label>
-              degree/certification name
-              <input type="text" name="educationName" required maxLength={50} />
-            </label>
-            <label>
-              completion date
-              <input type="date" name="educationDate" maxLength={50} />
-            </label>
-            <label>
-              institution
-              <input type="text" name="educationInstitution" maxLength={50} />
-            </label>
-            <label>
-              location
-              <input type="text" name="educationLocation" maxLength={50} />
-            </label>
-            <button className="text-slate-900 font-extrabold text-sm">
-              Add Education
-            </button>
-          </div>
-        </>
-      ) : (
-        <button
-          className="flex flex-wrap gap-2 items-center justify-center mr-auto"
-          onClick={toggleShowAddEducation}
-        >
-          <FontAwesomeIcon icon={faPlusCircle} />
-          Add Education
-        </button>
-      )}
-    </>
-  );
-}
-
-function ExperienceSection({ visible = false, toggleShowAddExperience }) {
-  return (
-    <>
-      <h2 className="resume-section">experience</h2>
-      {visible ? (
-        <>
-          <div className="w-full relative shadow p-4">
-            <button
-              onClick={toggleShowAddExperience}
-              aria-label="close add work experience modal"
-              className="close-btn"
-            >
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-            <label>
-              title
-              <input
-                type="text"
-                name="experienceTitle"
-                required
-                maxLength={50}
-              />
-            </label>
-            <label>
-              company
-              <input
-                type="text"
-                name="experienceCompany"
-                required
-                maxLength={50}
-              />
-            </label>
-            <label>
-              from
-              <input type="date" name="experienceFrom" />
-            </label>
-            <label>
-              to
-              <input type="date" name="experienceTo" />
-            </label>
-            <label>
-              keypoints
-              <textarea />
-            </label>
-            <button className="text-slate-900 font-extrabold text-sm">
-              Add Experience
-            </button>
-          </div>
-        </>
-      ) : (
-        <button
-          className="flex flex-wrap gap-2 items-center justify-center mr-auto"
-          onClick={toggleShowAddExperience}
-        >
-          <FontAwesomeIcon icon={faPlusCircle} />
-          Add Experience
-        </button>
-      )}
-    </>
   );
 }

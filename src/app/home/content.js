@@ -36,7 +36,7 @@ function CTA() {
             </span>
           </div>
           <h2>
-            Create a streamlined resume to land your dream job, in minutes.
+            Create a streamlined one-page resume to land your dream job, in minutes.
           </h2>
           <Link href={"/start"} className="action-btn mt-4">
             Get Started
@@ -45,6 +45,7 @@ function CTA() {
         <img
           src="/cta.png"
           className="md:w-[200px] lg:w-[300px] max-w-[90vw] h-auto"
+          alt="abstract representation of a resume in dark blue and orange. Generated using Dall-e 3."
         />
       </div>
     </section>
