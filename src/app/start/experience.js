@@ -16,7 +16,7 @@ export default function ExperienceSection({
   add,
   remove,
   currentData,
-  allowNew = true,
+  allowNew,
 }) {
   //manage field errors
   const [errors, setErrors] = useState({});
@@ -213,7 +213,7 @@ export default function ExperienceSection({
             <span>Add</span>
           </button>
         </Modal>
-      ) : allowNew ? (
+      ) : allowNew() ? (
         <button className="section-add-btn" onClick={toggleShowAddExperience}>
           <FontAwesomeIcon icon={faPlusCircle} />
           Add Experience

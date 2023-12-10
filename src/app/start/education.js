@@ -16,7 +16,7 @@ export default function EducationSection({
   add,
   remove,
   currentData,
-  allowNew = true,
+  allowNew,
 }) {
   //manage field errors
   const [errors, setErrors] = useState({});
@@ -195,7 +195,7 @@ export default function EducationSection({
             <span>Add</span>
           </button>
         </Modal>
-      ) : allowNew ? (
+      ) : allowNew() ? (
         <button className="section-add-btn" onClick={toggleShowAddEducation}>
           <FontAwesomeIcon icon={faPlusCircle} />
           Add Education

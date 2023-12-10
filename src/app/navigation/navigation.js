@@ -73,7 +73,7 @@ export default function Navigation() {
               flex text-sm  m-2 text-center lg:hidden py-3 px-8 action rounded-md
             `}
           >
-            Test
+            About
           </Link>
 
           <button
@@ -103,7 +103,7 @@ export default function Navigation() {
               <Link href={"/"} className={`hover:opacity-80`}>
                 Home
               </Link>
-              <Link href={"test"} className={`hover:opacity-80`}>
+              <Link href={"about  "} className={`hover:opacity-80`}>
                 About
               </Link>
               <Link

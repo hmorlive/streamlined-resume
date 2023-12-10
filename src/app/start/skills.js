@@ -13,7 +13,7 @@ export default function SkillsSection({
   add,
   remove,
   currentData,
-  allowNew = true,
+  allowNew,
 }) {
   //manage state of skill fields
   const [data, setData] = useState({

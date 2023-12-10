@@ -18,7 +18,7 @@ label {
   @apply my-2 flex flex-col flex-wrap text-xs font-extrabold text-slate-900 max-w-[70vw]
 }
 
-input[type=text] {
+input[type=text], input[type=email], input[type=url] {
   @apply font-normal w-[250px] max-w-full text-base border-b-2 border-zinc-200 hover:border-sky-900 focus:border-sky-900 focus:outline-none;
 }
 

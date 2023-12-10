@@ -20,6 +20,7 @@ export default function ResumeDetails() {
   const [showAddEducation, setShowAddEducation] = useState(false); //manage state of add education modal
   const [showAddProject, setShowAddProject] = useState(false); //manage state of add project modal
 
+  const [userContact, setuserContact] = useState({}); // keep track of user skills
   const [userSkills, setUserSkills] = useState([]); // keep track of user skills
   const [userExperience, setUserExperience] = useState([]); // keep track of user experience
   const [userEducation, setUserEducation] = useState([]); // keep track of user education
@@ -27,6 +28,9 @@ export default function ResumeDetails() {
   const [userLanguages, setUserLanguages] = useState([]); // keep track of user languages
 
   //add new user section part
+  const addContactInfo = (data) => {
+    setuserContact(data);
+  };
   const addUserSkills = (data) => {
     setUserSkills([...userSkills, data]);
   };
@@ -119,6 +123,15 @@ export default function ResumeDetails() {
   //actually submit the fomr
   const performSubmission = () => {
     setIsSubmitting(true);
+    //prepare submission
+    const submissionData = {
+      contact: userContact,
+      skills: userSkills,
+      languages: userLanguages,
+      education: userEducation,
+      experience: userExperience,
+      projects: userProject
+    }
   };
 
   //initiate submission and toggle confirmation
@@ -198,7 +211,7 @@ export default function ResumeDetails() {
       <form className="flex flex-col gap-4 max-w-full" onSubmit={submitDetails}>
         <h1 className="text-xl mb-1 text-left w-full">Your Details</h1>
         <hr className="divider" />
-        <ContactInfoSection />
+        <ContactInfoSection add={addContactInfo} />
         <hr className="divider" />
         <div className="flex flex-wrap w-full gap-4">
           <SkillsSection

@@ -13,7 +13,7 @@ export default function LanguageSection({
   add,
   remove,
   currentData,
-  allowNew = true,
+  allowNew
 }) {
   //manage state of language fields
   const [data, setData] = useState({

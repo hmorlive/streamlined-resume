@@ -1,9 +1,8 @@
 import { useState } from "react";
 
 // Contact Component
-export default function ContactInfoSection() {
-  const [phoneNumber, setPhoneNumber] = useState("");
-
+export default function ContactInfoSection({ add }) {
+  //format phone number as (999) 999-9999
   const formatPhoneNumber = (value) => {
     if (!value) return value;
     const phoneNumber = value.replace(/[^\d]/g, "");
@@ -16,9 +15,39 @@ export default function ContactInfoSection() {
       6
     )}-${phoneNumber.slice(6, 10)}`;
   };
-  
-  const handlePhoneNumberChange = (e) => {
-    setPhoneNumber(formatPhoneNumber(e.target.value));
+
+  //format github handle
+  const formatGithubValue = (value) => {
+    if (!value) return value;
+    return "@" + value.replace(/@/g, '');
+  }
+
+  //manage state of contact fields
+  const [data, setData] = useState({
+    name: "",
+    title: "",
+    summary: "",
+    location: "",
+    email: "",
+    phone: "",
+    website: "",
+    github: "",
+  });
+
+  //handle change in input
+  const handleChange = (e) => {
+    e.preventDefault();
+    if (e.target.name === "phone") {
+      setData({ ...data, phone: formatPhoneNumber(e.target.value) });
+    } else if (e.target.name === "github") {
+      setData({ ...data, github: formatGithubValue(e.target.value) });
+    }else {
+      setData({
+        ...data,
+        [e.target.name]: e.target.value,
+      });
+    }
+    add(data);
   };
 
   return (
@@ -28,15 +57,34 @@ export default function ContactInfoSection() {
         <div className="flex flex-wrap gap-4">
           <label>
             name
-            <input type="text" name="name" required maxLength={25} />
+            <input
+              type="text"
+              name="name"
+              required
+              maxLength={25}
+              onChange={handleChange}
+              value={data.name}
+            />
           </label>
           <label>
             title
-            <input type="text" name="title" required maxLength={20} />
+            <input
+              type="text"
+              name="title"
+              required
+              maxLength={20}
+              onChange={handleChange}
+              value={data.title}
+            />
           </label>
           <label>
             professional summary
-            <textarea name="summary" maxLength={400} />
+            <textarea
+              name="summary"
+              maxLength={400}
+              onChange={handleChange}
+              value={data.summary}
+            />
           </label>
         </div>
       </div>
@@ -45,11 +93,23 @@ export default function ContactInfoSection() {
         <div className="flex flex-wrap gap-4">
           <label>
             location
-            <input type="text" name="location" maxLength={30} />
+            <input
+              type="text"
+              name="location"
+              maxLength={30}
+              onChange={handleChange}
+              value={data.location}
+            />
           </label>
           <label>
             email
-            <input type="text" name="email" maxLength={25} />
+            <input
+              type="email"
+              name="email"
+              maxLength={25}
+              onChange={handleChange}
+              value={data.email}
+            />
           </label>
           <label>
             phone number
@@ -57,17 +117,29 @@ export default function ContactInfoSection() {
               type="text"
               name="phone"
               minLength={14}
-              onChange={handlePhoneNumberChange}
-              value={phoneNumber}
+              onChange={handleChange}
+              value={data.phone}
             />
           </label>
           <label>
             github
-            <input type="text" name="github" maxLength={20} />
+            <input
+              type="text"
+              name="github"
+              maxLength={20}
+              onChange={handleChange}
+              value={data.github}
+            />
           </label>
           <label>
             website url
-            <input type="text" name="website" maxLength={50} />
+            <input
+              type="url"
+              name="website"
+              maxLength={50}
+              onChange={handleChange}
+              value={data.website}
+            />
           </label>
         </div>
       </div>

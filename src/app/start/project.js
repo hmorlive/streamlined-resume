@@ -16,7 +16,7 @@ export default function ProjectsSection({
   add,
   remove,
   currentData,
-  allowNew = true,
+  allowNew,
 }) {
   //manage field errors
   const [errors, setErrors] = useState({});
@@ -107,9 +107,9 @@ export default function ProjectsSection({
                 {data.description || null}
               </span>
             </div>
-            <span className="text-xs">
+            {data.url && <span className="text-xs">
               <strong>url</strong>: {data.url}
-            </span>
+            </span>}
             <button
               onClick={handleRemove(data.id)}
               className="section-add-btn"
@@ -188,7 +188,7 @@ export default function ProjectsSection({
             <span>Add</span>
           </button>
         </Modal>
-      ) : allowNew ? (
+      ) : allowNew() ? (
         <button className="section-add-btn" onClick={toggleShowAddProject}>
           <FontAwesomeIcon icon={faPlusCircle} />
           Add Project
