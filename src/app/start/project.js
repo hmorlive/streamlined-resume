@@ -178,7 +178,7 @@ export default function ProjectsSection({
               type="text"
               name="description"
               required
-              maxLength={50}
+              maxLength={500}
               onChange={handleChange}
               value={data.description}
             />

@@ -120,7 +120,6 @@ export default function ExperienceSection({
                 {data.keypoints.map((keypoint, index) => (
                   <li key={index}>
                     {keypoint || null}
-                    {data.keypoints.length}
                   </li>
                 ))}
               </ul>
@@ -154,7 +153,7 @@ export default function ExperienceSection({
               name="title"
               onChange={handleChange}
               value={data.title}
-              maxLength={20}
+              maxLength={50}
               className={errors.title ? '!border-red-600' : null}
             />
           </label>

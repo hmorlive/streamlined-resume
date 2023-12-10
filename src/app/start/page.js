@@ -120,17 +120,37 @@ export default function ResumeDetails() {
     return false;
   };
 
-  //actually submit the fomr
-  const performSubmission = () => {
+  //send the submission data to the backend
+  const performSubmission = async () => {
     setIsSubmitting(true);
-    //prepare submission
+
+    // Prepare submission data
     const submissionData = {
       contact: userContact,
       skills: userSkills,
       languages: userLanguages,
       education: userEducation,
       experience: userExperience,
-      projects: userProject
+      projects: userProject,
+    };
+
+    try {
+      const response = await fetch("http://localhost:3100/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(submissionData),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+      } else {
+        console.error("Submission failed:", response.status);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
     }
   };
 
@@ -191,10 +211,12 @@ export default function ResumeDetails() {
               <h2 className="border-l-4 pl-2 border-red-700">Warning</h2>
               <p>One or more important sections have been left blank.</p>
             </>
-          ) :         <>
-          <h2 className="border-l-4 pl-2 border-green-700">Confirm</h2>
-          <p>Please make sure everything looks correct.</p>
-        </> }
+          ) : (
+            <>
+              <h2 className="border-l-4 pl-2 border-green-700">Confirm</h2>
+              <p>Please make sure everything looks correct.</p>
+            </>
+          )}
           <div className="flex flex-wrap gap-4">
             <button onClick={acceptAsIs} className="action-btn">
               Accept as is
