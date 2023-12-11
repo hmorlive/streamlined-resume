@@ -15,6 +15,8 @@ export default function ResumeDetails() {
   const [isSubmitting, setIsSubmitting] = useState(false); //manage state of form submission
   const [promptConfirmation, setPromptConfirmation] = useState(true); //prompt user to confirm if some important sections blank
   const [showConfirmationModal, setShowConfirmationModal] = useState(false); //state of user confirmation modal
+  const [generationError, setGenerationError] = useState(false); // manage error at pdf generation
+  const [documentAvailable, setDocumentAvailable] = useState(false); // manage state of document avaialbility
 
   const [showAddExperience, setShowAddExperience] = useState(false); //manage state of add experience modal
   const [showAddEducation, setShowAddEducation] = useState(false); //manage state of add education modal
@@ -134,25 +136,43 @@ export default function ResumeDetails() {
       projects: userProject,
     };
 
+    downloadPDF(submissionData);
+  };
+
+  //allow pdf download
+  async function downloadPDF(data) {
     try {
       const response = await fetch("http://localhost:3100/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(submissionData),
+        body: JSON.stringify(data)
       });
 
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log(responseData);
-      } else {
-        console.error("Submission failed:", response.status);
-      }
+      if (!response.ok) throw new Error();
+      const blob = await response.blob();
+
+      // Create a Blob URL
+      const blobUrl = URL.createObjectURL(blob);
+
+      // Create a temporary download link
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "resume.pdf";
+
+      // Append to the document and trigger download
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up: remove the link and revoke the Blob URL
+      document.body.removeChild(link);
+      URL.revokeObjectURL(blobUrl);
+      setDocumentAvailable(true);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      return setGenerationError(true);
     }
-  };
+  }
 
   //initiate submission and toggle confirmation
   const submitDetails = (e) => {
@@ -183,6 +203,29 @@ export default function ResumeDetails() {
     setShowConfirmationModal(!showConfirmationModal);
   };
 
+  //success screen
+  if (documentAvailable) {
+    return (
+      <section className="w-full min-h-[70vh] flex flex-col justify-center items-center">
+        <div className="flex flex-col w-fit gap-2 p-4">
+          <h1 className="pl-2 border-l-8 border-green-600">That's it! Your resume is ready.</h1>
+          <p className="text-lg">Hope it helps you in your journey.</p>
+        </div>
+      </section>
+    )
+  }
+
+  //error screen
+  if (generationError) {
+    return (
+      <section className="w-full min-h-[70vh] flex flex-col justify-center items-center">
+        <div className="flex flex-col w-fit gap-2 p-4">
+          <h1 className="pl-2 border-l-8 border-red-600">Huh, there was an Error generating your resume.</h1>
+          <p className="text-lg">Accept our apologies. Please try again later.</p>
+        </div>
+      </section>
+    )
+  }
   //loading screen while resume is being generated
   if (isSubmitting) {
     return (

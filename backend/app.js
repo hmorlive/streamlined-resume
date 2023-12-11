@@ -2,6 +2,8 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const { generatePDF } = require('./generation/generate');
+const { validateData } = require("./validation/validate")
 
 // Enable CORS for all routes
 app.use(cors());
@@ -11,12 +13,22 @@ app.use(express.json());
 
 app.post("/generate", async (req, res) => {
   try {
+    //1. extract data from body
     const data = req.body;
-    console.log(data);
-    return res.send({ response: "All good here" });
+
+    //2. validate data from body
+    validateData(data);
+
+    // format pdf and return buffer
+    const pdfBuffer = await generatePDF(data);
+
+    //return buffer
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=resume.pdf');
+    return res.send(pdfBuffer);
   } catch (error) {
     console.log(error);
-    return res.sendStatus(500); // Use sendStatus for setting the status code
+    return res.sendStatus(500);
   }
 });
 
