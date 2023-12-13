@@ -18,7 +18,7 @@ export default function Footer () {
             reserved.
           </p>
         </div>
-        <Link href={"https://github.com/hmorlive/streamlined-resume"} target='_black' aria-label='Link to Github Repo'><FontAwesomeIcon icon={faGithub} /></Link>
+        <Link href={"https://github.com/hmorlive/streamlined-resume"} target='_black' aria-label='Link to Github Repo' title='Link to Github Repo'><FontAwesomeIcon icon={faGithub} /></Link>
       </div>
     </footer>
   )
