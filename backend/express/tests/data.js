@@ -96,9 +96,9 @@ const completeData = {
     {
       name: "Streamlined Resume",
       date: "2023-12-10",
-      url: "streamlinedresume.com",
+      url: "resume.hazmedmoreno.com",
       description:
-        "Developed an app to showcase my coding skills, using it to create this resume. Handled design, development, and testing. Utilized NextJS for the frontend, implemented a serverless backend with AWS Lambda, and exported the client to S3, served via AWS Cloudfront. Managed DNS configuration.",
+        "Developed a dynamic resume builder app to showcase coding proficiency. Utilized NextJS for a static frontend, enhancing UX. Backend orchestrated by AWS Lambda for efficient PDF generation. Implemented a mix of manual and automated testing for reliability. Leveraged S3 for storage, with Cloudfront for optimized content delivery. Managed DNS for seamless domain integration. Demonstrated skills in full-stack development, cloud services, and application deployment.",
       id: "5e1ac5bb-dd0f-4d2e-8433-423050668463",
     },
     {

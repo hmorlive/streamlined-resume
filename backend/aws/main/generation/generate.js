@@ -1,10 +1,5 @@
 const PDFDocument = require("pdfkit");
 
-/**
- * Generates PDF Document
- * @param {*} data 
- * @returns 
- */
 async function generatePDF(data) {
   try {
     // Create a document
@@ -67,7 +62,7 @@ async function generatePDF(data) {
       doc.text("PROFESSIONAL SUMMARY", { width: firstColumnWidth });
       doc.y = doc.y + 3; //move y down;
       doc.fillColor("#555555");
-      doc.font("regular").fontSize(automatedFontSize + 9);
+      doc.font("regular").fontSize(automatedFontSize + 8);
       doc.text(data.contact.summary, { width: firstColumnWidth });
     }
 
@@ -186,7 +181,7 @@ async function generatePDF(data) {
         data.description
           ? doc
               .font("light")
-              .fontSize(automatedFontSize + 9)
+              .fontSize(automatedFontSize + 8)
               .text(data.description, { width: firstColumnWidth })
           : null;
         doc.y = doc.y + 7;
@@ -324,9 +319,9 @@ async function generatePDF(data) {
     doc.y = doc.y + 3; //move y down;
     doc.fillColor("#555555");
     doc.font("regular").fontSize(9);
-    doc.lineGap(6);
+    doc.lineGap(1);
     data.languages.forEach((language) => {
-      doc.text(language.language);
+      doc.text(bulletChar + " " + language.language);
     });
 
     // Finalize PDF file
