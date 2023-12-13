@@ -6,6 +6,8 @@ async function lambdaHandler(event, context) {
     // Extract data from the event object
     const data = JSON.parse(event.body);
 
+    console.log("data:", data);
+
     // Validate and process the data
     validateData(data);
     const pdfBuffer = await generatePDF(data);

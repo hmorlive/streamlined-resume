@@ -142,7 +142,7 @@ export default function ResumeDetails() {
   //allow pdf download
   async function downloadPDF(data) {
     try {
-      const response = await fetch("http://localhost:3000/generate", {
+      const response = await fetch("https://bqgv7cf5ol.execute-api.us-east-1.amazonaws.com/v1/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -14,7 +14,7 @@ const font = Lato({
 
 export const metadata = {
   title: "Streamlined Resume",
-  description: "Create a streamlined resume to land your dream job",
+  description: "Create a streamlined resume to land your dream job. Created by Hazmed Moreno.",
 };
 
 export default function RootLayout({ children }) {

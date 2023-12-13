@@ -1,4 +1,10 @@
 const PDFDocument = require("pdfkit");
+
+/**
+ * Generates PDF Document
+ * @param {*} data 
+ * @returns 
+ */
 async function generatePDF(data) {
   try {
     // Create a document
@@ -79,7 +85,14 @@ async function generatePDF(data) {
           ? doc
               .font("bold")
               .fontSize(automatedFontSize + 10)
-              .text(data.title, { continued: !!(data.company.length > 0 || data.from.length > 0 || data.to.length > 0), width: firstColumnWidth })
+              .text(data.title, {
+                continued: !!(
+                  data.company.length > 0 ||
+                  data.from.length > 0 ||
+                  data.to.length > 0
+                ),
+                width: firstColumnWidth,
+              })
           : null; //title
         data.company
           ? doc.font("light").text(" - " + data.company, {
@@ -191,8 +204,7 @@ async function generatePDF(data) {
 
     //second column rectangle
     const rectWidth = 200;
-    const rectHeight =
-      doc.page.height - 10 - startingColumnHeight;
+    const rectHeight = doc.page.height - 10 - startingColumnHeight;
     doc.moveTo(secondColumnStart - 10, startingColumnHeight - 20);
     doc.lineWidth(1);
     doc.rect(
@@ -218,7 +230,7 @@ async function generatePDF(data) {
         .fontSize(12)
         .font("fa-solid")
         .text("\uf3c5", { continued: true })
-        .fontSize(10)
+        .fontSize(9)
         .font("regular")
         .text(" " + data.contact.location);
       doc.y = doc.y + 4;
@@ -229,7 +241,7 @@ async function generatePDF(data) {
         .fontSize(12)
         .font("fa-solid")
         .text("\uf3ce", { continued: true })
-        .fontSize(10)
+        .fontSize(9)
         .font("regular")
         .text(" " + data.contact.phone);
       doc.y = doc.y + 4;
@@ -240,9 +252,20 @@ async function generatePDF(data) {
         .fontSize(12)
         .font("fa-solid")
         .text("\uf0e0", { continued: true })
-        .fontSize(10)
+        .fontSize(9)
         .font("regular")
         .text(" " + data.contact.email);
+      doc.y = doc.y + 4;
+    }
+    //website
+    if (data.contact.website) {
+      doc
+        .fontSize(12)
+        .font("fa-solid")
+        .text("\uf0ac", { continued: true })
+        .fontSize(9)
+        .font("regular")
+        .text(" " + data.contact.website);
       doc.y = doc.y + 4;
     }
     //github
@@ -251,30 +274,14 @@ async function generatePDF(data) {
         .fontSize(12)
         .font("fa-brand")
         .text("\uf092", { continued: true })
-        .fontSize(10)
+        .fontSize(9)
         .font("regular")
         .text(" " + data.contact.github);
       doc.y = doc.y + 4;
     }
-    //website
-    if (data.contact.website) {
-      const currentX = doc.x;
-      doc
-        .fontSize(12)
-        .font("fa-solid")
-        .text("\uf0ac", { continued: true })
-        .fontSize(10)
-        .font("regular")
-        .text(" " + data.contact.website, doc.x + 12, doc.y, {
-          width: doc.page.width - doc.page.margins - firstColumnWidth + 6,
-        });
-      doc.y = doc.y + 4;
-      doc.x = currentX;
-    }
-
     //skills
     if (data.skills.length > 0) {
-      doc.y = doc.y + 20;
+      doc.y = doc.y + 16;
       doc.font("light").fontSize(10);
       doc.fillColor("#666666");
       doc.text("SKILLS");
@@ -338,5 +345,5 @@ async function generatePDF(data) {
 }
 
 module.exports = {
-  generatePDF
-}
+  generatePDF,
+};

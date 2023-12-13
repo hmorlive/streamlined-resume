@@ -5,5 +5,3 @@ export default function Home() {
     <HomePageContent />
   )
 }
-
-//theme colors

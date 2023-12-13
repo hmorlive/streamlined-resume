@@ -1,5 +1,4 @@
 const PDFDocument = require("pdfkit");
-const fs = require("fs");
 
 async function generatePDF(data) {
   try {
