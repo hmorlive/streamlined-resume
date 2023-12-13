@@ -190,7 +190,7 @@ export default function ExperienceSection({
             />
           </label>
           <label>
-            to (if blank defaults to "Current")
+            to (if blank defaults to &quot;Current&quot;)
             <input
               type="date"
               name="to"

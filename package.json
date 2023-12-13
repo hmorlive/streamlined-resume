@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",

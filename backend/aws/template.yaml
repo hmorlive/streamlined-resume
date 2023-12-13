@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  streamlined-resume-aws-backend
+
+  Sample SAM Template for streamlined-resume-aws-backend
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+
+Resources:
+  # HTTP API
+  MainAPI:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: v1
+      DisableExecuteApiEndpoint: false
+      Name: resume-api
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 10
+        ThrottlingRateLimit: 5
+      CorsConfiguration:
+        AllowMethods:
+          - POST
+        AllowOrigins:
+          - https://resume.hazmedmoreno.com
+        AllowHeaders:
+          - Content-Type
+
+  # Resume generation function
+  GenerateResumeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: main/
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Events:
+        ContactSubmit:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref MainAPI
+            Path: /generate
+            Method: post

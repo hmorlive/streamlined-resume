@@ -10,16 +10,15 @@ export default function AboutSection() {
         </h1>
         <hr className="divider mt-2 mb-4" />
         <h2 className="text-lg">
-          Hi, I'm Hazmed Moreno, but my friends call me Haz. I'm gearing up to
-          apply for a position as a software engineer at this awesome company,
-          Two Barrels. The thing is, I don't have a lot of public-facing code
-          that I can show off. To tackle this, I've decided to put together a
-          neat app as a showcase of my skills. It's a perfect opportunity for me
+          Hi, I&apos;m Hazmed Moreno, but my friends call me Haz. I&apos;m gearing up to
+          apply for a position as a software engineer at an awesome company. 
+          The thing is, I don&apos;t have a lot of public-facing code
+          that I can show off. To tackle this, I&apos;ve decided to put together a
+          neat app as a showcase of my skills. It&apos;s a perfect opportunity for me
           to demonstrate my knack for coding and my ability to deliver
-          innovative solutions. I'm really excited to give them a glimpse of my
+          innovative solutions. I&apos;m really excited to give them a glimpse of my
           technical capabilities and creativity. Fingers crossed that this app
           will help me stand out in my application!
-          
         </h2>
       </div>
     </section>

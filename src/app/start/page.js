@@ -142,7 +142,7 @@ export default function ResumeDetails() {
   //allow pdf download
   async function downloadPDF(data) {
     try {
-      const response = await fetch("http://localhost:3100/generate", {
+      const response = await fetch("http://localhost:3000/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -208,7 +208,7 @@ export default function ResumeDetails() {
     return (
       <section className="w-full min-h-[70vh] flex flex-col justify-center items-center">
         <div className="flex flex-col w-fit gap-2 p-4">
-          <h1 className="pl-2 border-l-8 border-green-600">That's it! Your resume is ready.</h1>
+          <h1 className="pl-2 border-l-8 border-green-600">That&apos;s it! Your resume is ready.</h1>
           <p className="text-lg">Hope it helps you in your journey.</p>
         </div>
       </section>
