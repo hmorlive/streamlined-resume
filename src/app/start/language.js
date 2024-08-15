@@ -62,7 +62,7 @@ export default function LanguageSection({
 
   return (
     <div className="flex flex-col max-w-[250px]">
-      <h2 className="resume-section mb-2">languages (spoken)</h2>
+      <h2 className="resume-section mb-2">languages</h2>
       {currentData && currentData.length > 0 ? (
         <div className="flex gap-2">
           {currentData.map((data) => (

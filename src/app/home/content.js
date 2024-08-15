@@ -19,7 +19,6 @@ function CTA() {
       <div className="flex flex-wrap md:flex-nowrap h-fit items-center w-fit gap-4 mx-[10%] md:gap-[10vw] p-4">
         <div className="w-fit flex flex-col gap-2 mx-auto md:text-left md:mx-0">
           <div>
-            <h2>Hi <strong>Two Barrels</strong>!</h2>
             <h1 className="text-5xl font-extrabold tracking-tighter">
               <span className="text-sky-950 font-extrabold">Streamlined</span>{" "}
               <span className="text-charcoal font-light">Resume</span>

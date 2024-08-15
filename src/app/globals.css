@@ -11,7 +11,7 @@ h2 {
 }
 
 .action-btn {
-  @apply px-10 w-full py-3 text-center sm:w-fit bg-orange-700 hover:bg-orange-800 rounded-full text-white text-base font-bold;
+  @apply px-10 w-full py-3 text-center sm:w-fit bg-blue-600 hover:bg-blue-700 rounded text-white text-base font-bold;
 }
 
 label {
