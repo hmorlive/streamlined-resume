@@ -27,9 +27,9 @@ input[type=date] {
 }
 
 textarea {
-  @apply font-normal resize-y h-auto w-[400px] max-w-full text-sm border-2 rounded-md border-zinc-200 hover:border-sky-900 focus:border-sky-900 outline-none focus:outline-none;
+  @apply font-normal resize-y h-40 text-sm border-2 rounded-md border-zinc-200 hover:border-sky-900 focus:border-sky-900 outline-none focus:outline-none;
 }
-
+  
 .resume-section {
   @apply uppercase font-light text-sm;
 }

@@ -54,28 +54,30 @@ export default function ContactInfoSection({ add }) {
     <div className="flex flex-col w-full flex-wrap gap-4">
       <div className="flex flex-col">
         <h2 className="resume-section">basic information</h2>
-          <label>
-            name
-            <input
-              type="text"
-              name="name"
-              required
-              maxLength={25}
-              onChange={handleChange}
-              value={data.name}
-            />
-          </label>
-          <label>
-            title
-            <input
-              type="text"
-              name="title"
-              required
-              maxLength={20}
-              onChange={handleChange}
-              value={data.title}
-            />
-          </label>
+          <div className="flex flex-wrap gap-6">
+            <label>
+              name
+              <input
+                type="text"
+                name="name"
+                required
+                maxLength={25}
+                onChange={handleChange}
+                value={data.name}
+              />
+            </label>
+            <label>
+              title
+              <input
+                type="text"
+                name="title"
+                required
+                maxLength={20}
+                onChange={handleChange}
+                value={data.title}
+              />
+            </label>
+          </div>
           <label>
             professional summary
             <textarea
@@ -88,36 +90,42 @@ export default function ContactInfoSection({ add }) {
       </div> 
       <div className="flex flex-col">
         <h2 className="resume-section">contact information</h2>
-          <label>
-            location
-            <input
-              type="text"
-              name="location"
-              maxLength={30}
-              onChange={handleChange}
-              value={data.location}
-            />
-          </label>
-          <label>
-            email
-            <input
-              type="email"
-              name="email"
-              maxLength={25}
-              onChange={handleChange}
-              value={data.email}
-            />
-          </label>
-          <label>
-            phone number
-            <input
-              type="text"
-              name="phone"
-              minLength={14}
-              onChange={handleChange}
-              value={data.phone}
-            />
-          </label>
+        <div className="flex flex-wrap gap-6">
+            <label>
+              location
+              <input
+                type="text"
+                name="location"
+                maxLength={30}
+                onChange={handleChange}
+                value={data.location}
+                placeholder="Miami, FL"
+              />
+            </label>
+            <label>
+              email
+              <input
+                type="email"
+                name="email"
+                maxLength={25}
+                onChange={handleChange}
+                value={data.email}
+                placeholder="mail@hazmedmoreno.com"
+              />
+            </label>
+            <label>
+              phone number
+              <input
+                type="text"
+                name="phone"
+                minLength={14}
+                onChange={handleChange}
+                value={data.phone}
+                placeholder="(999) 999-9999"
+              />
+            </label>
+          </div>
+          <div className="flex flex-wrap gap-6">
           <label>
             github
             <input
@@ -126,6 +134,7 @@ export default function ContactInfoSection({ add }) {
               maxLength={20}
               onChange={handleChange}
               value={data.github}
+              placeholder="@hmorlive"
             />
           </label>
           <label>
@@ -136,8 +145,10 @@ export default function ContactInfoSection({ add }) {
               maxLength={50}
               onChange={handleChange}
               value={data.website}
+              placeholder="https://hazmedmoreno.com"
             />
           </label>
+          </div>
         </div>
     </div>
   );

@@ -84,9 +84,9 @@ export default function SkillsSection({ add, remove, currentData, allowNew }) {
           </label>
           <button
             onClick={handleAddLanguage}
-            className="font-light text-sm text-slate-900 flex items-center justify-center gap-1"
+            className="font-light bg-slate-200 rounded p-2 text-sm text-slate-900 flex items-center justify-center gap-1"
           >
-            <FontAwesomeIcon icon={faPlusCircle} />
+            <Rx
             Add Skill
           </button>
         </div>
