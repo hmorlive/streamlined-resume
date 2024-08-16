@@ -10,20 +10,24 @@ h2 {
   @apply text-xl
 }
 
+.switcher-btn {
+  @apply text-slate-600 border-slate-600 border-2 hover:bg-blue-50 px-6 py-3 rounded flex gap-1 items-center justify-center w-40 max-w-full font-bold text-sm;
+}
+
 .action-btn {
   @apply px-10 max-w-full py-3 text-center sm:w-fit bg-blue-600 hover:bg-blue-700 w-60 rounded text-white text-base font-bold;
 }
 
 label {
-  @apply my-2 flex flex-col flex-wrap text-xs font-extrabold text-slate-900 max-w-[70vw]
+  @apply my-2 flex flex-col flex-wrap text-xs capitalize font-extrabold text-slate-900 max-w-[70vw]
 }
 
 input[type=text], input[type=email], input[type=url] {
-  @apply font-normal w-[250px] max-w-full text-base border-b-2 border-zinc-200 hover:border-sky-900 focus:border-sky-900 focus:outline-none;
+  @apply font-normal w-[250px] max-w-full text-base border border-gray-300 rounded p-1 hover:border-sky-900 focus:border-sky-900 focus:outline-none;
 }
 
 input[type=date] {
-  @apply text-zinc-600 font-normal w-[250px] max-w-full text-base border-b-2 border-zinc-200 hover:border-sky-900 focus:border-sky-900 focus:outline-none;
+  @apply text-zinc-600 font-normal w-fit max-w-full text-base border-b-2 border-zinc-200 hover:border-sky-900 focus:border-sky-900 focus:outline-none;
 }
 
 textarea {
@@ -56,4 +60,11 @@ textarea {
 
 .error-container {
   @apply flex items-center justify-center w-fit h-fit text-red-600 text-xs font-semibold lowercase gap-1 p-1 rounded-md border border-red-600;
+}
+
+.input-field {
+  border: 1px solid #d1d5db; /* Tailwind's border-gray-300 */
+  padding: 0.5rem;
+  border-radius: 0.375rem; /* Tailwind's rounded-md */
+  width: 100%;
 }

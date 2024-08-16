@@ -17,29 +17,24 @@ function CTA() {
   return (
     <section className="my-20 w-full flex items-center justify-center min-h-[70vh]">
       <div className="flex flex-wrap md:flex-nowrap h-fit items-center w-fit gap-4 mx-[10%] md:gap-[10vw] p-4">
-        <div className="w-fit flex flex-col gap-2 mx-auto md:text-left md:mx-0">
+        <div className="w-fit flex flex-col gap-6 mx-auto md:text-left md:mx-0">
           <div>
             <h1 className="text-5xl font-extrabold tracking-tighter">
               <span className="text-sky-950 font-extrabold">Streamlined</span>{" "}
               <span className="text-charcoal font-light">Resume</span>
             </h1>
-            <span className="text-xs">
-              by{" "}
-              <Link
-                href={"https://hazmedmoreno.com"}
-                className="font-extrabold text-indigo-600"
-                target="blank"
-              >
-                Hazmed Moreno
-              </Link>
-            </span>
-          </div>
-          <h2>
-            Create a streamlined one-page resume in minutes to land your dream job.
+            <h2 className="text-base font-light">
+            Build streamlined one-page resumes
           </h2>
-          <Link href={"/start"} className="action-btn mt-4">
+          </div>
+          <div className="flex items-center gap-4">
+          <Link href={"/start"} className="action-btn">
             Get Started
           </Link>
+          <Link href={"/about"} className="text-sm text-blue-600">
+            View sample
+          </Link>
+          </div>
         </div>
         <img
           src="/cta.png"

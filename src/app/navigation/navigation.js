@@ -104,7 +104,7 @@ export default function Navigation() {
               <li onClick={closeMenuAndNavigate}>
                 <Link
                   href={"start"}
-                  className="py-2 bg-blue-700 hover:bg-blue-600 text-white rounded px-6 font-bold"
+                  className="py-3 bg-blue-700 hover:bg-blue-600 text-white rounded px-6 font-bold"
                 >
                   Get Started
                 </Link>
