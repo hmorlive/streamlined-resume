@@ -9,12 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import ErrorContainer from "./shared/error-container";
 
 //skills component
-export default function SkillsSection({
-  add,
-  remove,
-  currentData,
-  allowNew,
-}) {
+export default function SkillsSection({ add, remove, currentData, allowNew }) {
   //manage state of skill fields
   const [data, setData] = useState({
     skill: "",
@@ -65,15 +60,10 @@ export default function SkillsSection({
       {currentData && currentData.length > 0 ? (
         <div className="flex gap-2 flex-wrap">
           {currentData.map((data) => (
-            <div
-              key={data.id}
-              className="flex flex-row flex-wrap w-fit items-center justify-center gap-1 bg-gray-50 font-bold text-xs text-slate-900 p-1 rounded-sm"
-            >
-              <span>{data.skill}</span>
-              <button onClick={handleRemove(data.id)} aria-label="remove skill">
+              <button title="Remove skill" onClick={handleRemove(data.id)} className="flex gap-2 bg-gray-100 text-gray-600  text-sm  p-1 rounded items-center justify-center " aria-label="remove skill">
+                <span>{data.skill}</span>
                 <FontAwesomeIcon icon={faTrashAlt} size="xs" />
               </button>
-            </div>
           ))}
         </div>
       ) : (

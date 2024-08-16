@@ -82,13 +82,13 @@ export default function Navigation() {
               openMenu
                 ? `fixed top-0 right-0 h-screen w-full bg-gray-50`
                 : "hidden bg-transparent"
-            } lg:relative lg:flex lg:w-auto full text-[calc(12px+10vh)]`}
+            } lg:relative lg:flex lg:w-auto full text-lg`}
           >
             <ul
               className={`${
                 openMenu
                   ? "p-4 items-center justify-center text-xl"
-                  : "text-sm justify-start"
+                  : "text-base justify-start"
               } flex ml-0 list-none flex-col space-y-14 overflow-scroll lg:overflow-visible lg:justify-center items-center h-full lg:flex-row lg:space-x-6 lg:space-y-0`}
             >
               <li onClick={closeMenuAndNavigate}>
@@ -104,7 +104,7 @@ export default function Navigation() {
               <li onClick={closeMenuAndNavigate}>
                 <Link
                   href={"start"}
-                  className="py-2 bg-orange-700 hover:bg-orange-800 text-white rounded-full px-6 font-bold"
+                  className="py-2 bg-blue-700 hover:bg-blue-600 text-white rounded px-6 font-bold"
                 >
                   Get Started
                 </Link>

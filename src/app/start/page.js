@@ -10,223 +10,178 @@ import Modal from "./shared/modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-// details needed to generate resume
 export default function ResumeDetails() {
-  const [isSubmitting, setIsSubmitting] = useState(false); //manage state of form submission
-  const [promptConfirmation, setPromptConfirmation] = useState(true); //prompt user to confirm if some important sections blank
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false); //state of user confirmation modal
-  const [generationError, setGenerationError] = useState(false); // manage error at pdf generation
-  const [documentAvailable, setDocumentAvailable] = useState(false); // manage state of document avaialbility
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [promptConfirmation, setPromptConfirmation] = useState(true);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [generationError, setGenerationError] = useState(false);
+  const [documentAvailable, setDocumentAvailable] = useState(false);
+  const [stage, setStage] = useState("basic");
+  const [showAddExperience, setShowAddExperience] = useState(false);
+  const [showAddEducation, setShowAddEducation] = useState(false);
+  const [showAddProject, setShowAddProject] = useState(false);
 
-  const [showAddExperience, setShowAddExperience] = useState(false); //manage state of add experience modal
-  const [showAddEducation, setShowAddEducation] = useState(false); //manage state of add education modal
-  const [showAddProject, setShowAddProject] = useState(false); //manage state of add project modal
+  const [userData, setUserData] = useState({
+    contact: {},
+    skills: [],
+    experience: [],
+    education: [],
+    projects: [],
+    languages: [],
+  });
 
-  const [userContact, setuserContact] = useState({}); // keep track of user skills
-  const [userSkills, setUserSkills] = useState([]); // keep track of user skills
-  const [userExperience, setUserExperience] = useState([]); // keep track of user experience
-  const [userEducation, setUserEducation] = useState([]); // keep track of user education
-  const [userProject, setUserProject] = useState([]); // keep track of user projects
-  const [userLanguages, setUserLanguages] = useState([]); // keep track of user languages
-
-  //add new user section part
-  const addContactInfo = (data) => {
-    setuserContact(data);
-  };
-  const addUserSkills = (data) => {
-    setUserSkills([...userSkills, data]);
-  };
-  const addUserExperience = (data) => {
-    setUserExperience([...userExperience, data]);
-  };
-  const addUserEducation = (data) => {
-    setUserEducation([...userEducation, data]);
-  };
-  const addUserProject = (data) => {
-    setUserProject([...userProject, data]);
-  };
-  const addUserLanguage = (data) => {
-    setUserLanguages([...userLanguages, data]);
-  };
-
-  //determine if new allowed
-  const shouldAllowNewSkill = () => {
-    return userSkills.length < 20;
-  };
-  const shouldAllowNewExperience = () => {
-    return userExperience.length < 3;
-  };
-  const shouldAllowNewEducation = () => {
-    return userEducation.length < 3;
-  };
-  const shouldAllowNewProject = () => {
-    return userProject.length < 3;
-  };
-  const shouldAllowNewLanguage = () => {
-    return userLanguages.length < 5;
-  };
-
-  //remove items in sections
-  const removeSkills = (id) => {
-    try {
-      const newSkill = userSkills.filter((item) => item.id !== id);
-      setUserSkills(newSkill);
-    } catch (error) {
-      //later ? log error or display err message, omitting for now
+  // Handle navigation between stages
+  const nextStage = () => {
+    const stages = [
+      "basic",
+      "skills",
+      "languages",
+      "experience",
+      "education",
+      "projects",
+    ];
+    const currentStageIndex = stages.indexOf(stage);
+    if (currentStageIndex < stages.length - 1) {
+      setStage(stages[currentStageIndex + 1]);
     }
   };
-  const removeExperience = (id) => {
-    try {
-      const newExperience = userExperience.filter((item) => item.id !== id);
-      setUserExperience(newExperience);
-    } catch (error) {
-      //later ? log error or display err message, omitting for now
+
+  const prevStage = () => {
+    const stages = [
+      "basic",
+      "skills",
+      "languages",
+      "experience",
+      "education",
+      "projects",
+    ];
+    const currentStageIndex = stages.indexOf(stage);
+    if (currentStageIndex > 0) {
+      setStage(stages[currentStageIndex - 1]);
     }
   };
-  const removeEducation = (id) => {
-    try {
-      const newEducation = userEducation.filter((item) => item.id !== id);
-      setUserEducation(newEducation);
-    } catch {
-      //later ? log error or display err message, omitting for now
-    }
+
+  // Add new user section part
+  const updateUserData = (section, data, append = false) => {
+    setUserData((prevData) => ({
+      ...prevData,
+      [section]: append ? [...prevData[section], data] : data,
+    }));
   };
-  const removeProject = (id) => {
-    try {
-      const newProject = userProject.filter((item) => item.id !== id);
-      setUserProject(newProject);
-    } catch {
-      //later ? log error or display err message, omitting for now
-    }
+
+  // Determine if new items are allowed
+  const shouldAllowNewItem = (section, maxItems) => {
+    return userData[section].length < maxItems;
   };
-  const removeLanguage = (id) => {
-    try {
-      const newLanguage = userLanguages.filter((item) => item.id !== id);
-      setUserLanguages(newLanguage);
-    } catch (error) {
-      //later ? log error or display err message, omitting for now
-    }
+
+  // Remove items in sections
+  const removeItem = (section, id) => {
+    setUserData((prevData) => ({
+      ...prevData,
+      [section]: prevData[section].filter((item) => item.id !== id),
+    }));
   };
 
   const isImportantSectionBlank = () => {
     if (
       promptConfirmation &&
-      (userSkills.length === 0 ||
-        userEducation.length === 0 ||
-        userExperience.length === 0 ||
-        userLanguages.length === 0 ||
-        userProject.length === 0)
+      (userData.skills.length === 0 ||
+        userData.education.length === 0 ||
+        userData.experience.length === 0 ||
+        userData.languages.length === 0 ||
+        userData.projects.length === 0)
     ) {
       return true;
     }
     return false;
   };
 
-  //send the submission data to the backend
+  // Send the submission data to the backend
   const performSubmission = async () => {
     setIsSubmitting(true);
-
-    // Prepare submission data
-    const submissionData = {
-      contact: userContact,
-      skills: userSkills,
-      languages: userLanguages,
-      education: userEducation,
-      experience: userExperience,
-      projects: userProject,
-    };
-
-    downloadPDF(submissionData);
+    downloadPDF(userData);
   };
 
-  //allow pdf download
+  // Allow PDF download
   async function downloadPDF(data) {
     try {
-      const response = await fetch("https://bqgv7cf5ol.execute-api.us-east-1.amazonaws.com/v1/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-      });
+      const response = await fetch(
+        "https://bqgv7cf5ol.execute-api.us-east-1.amazonaws.com/v1/generate",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       if (!response.ok) throw new Error();
       const blob = await response.blob();
 
-      // Create a Blob URL
       const blobUrl = URL.createObjectURL(blob);
-
-      // Create a temporary download link
       const link = document.createElement("a");
       link.href = blobUrl;
       link.download = "resume.pdf";
 
-      // Append to the document and trigger download
       document.body.appendChild(link);
       link.click();
 
-      // Clean up: remove the link and revoke the Blob URL
       document.body.removeChild(link);
       URL.revokeObjectURL(blobUrl);
       setDocumentAvailable(true);
     } catch (error) {
-      return setGenerationError(true);
+      setGenerationError(true);
     }
   }
 
-  //initiate submission and toggle confirmation
   const submitDetails = (e) => {
     e.preventDefault();
-    return toggleConfirmationModal();
+    toggleConfirmationModal();
   };
 
-  //user acceptance of form
   const acceptAsIs = () => {
     setPromptConfirmation(false);
     toggleConfirmationModal();
     performSubmission();
   };
 
-  //toggles visibility of add modals
-  const toggleShowAddExperience = (e) => {
-    setShowAddExperience(!showAddExperience);
-  };
-  const toggleShowAddEducation = (e) => {
-    setShowAddEducation(!showAddEducation);
-  };
-  const toggleShowAddProject = (e) => {
-    setShowAddProject(!showAddProject);
+  const toggleVisibility = (setter) => {
+    setter((prevState) => !prevState);
   };
 
-  //toggles visibility of confirmation modal
-  const toggleConfirmationModal = (e) => {
-    setShowConfirmationModal(!showConfirmationModal);
+  const toggleConfirmationModal = () => {
+    setShowConfirmationModal((prevState) => !prevState);
   };
 
-  //success screen
   if (documentAvailable) {
     return (
       <section className="w-full min-h-[70vh] flex flex-col justify-center items-center">
         <div className="flex flex-col w-fit gap-2 p-4">
-          <h1 className="pl-2 border-l-8 border-green-600">That&apos;s it! Your resume is ready.</h1>
+          <h1 className="pl-2 border-l-8 border-green-600">
+            That&apos;s it! Your resume is ready.
+          </h1>
           <p className="text-lg">Hope it helps you in your journey.</p>
         </div>
       </section>
-    )
+    );
   }
 
-  //error screen
   if (generationError) {
     return (
       <section className="w-full min-h-[70vh] flex flex-col justify-center items-center">
         <div className="flex flex-col w-fit gap-2 p-4">
-          <h1 className="pl-2 border-l-8 border-red-600">Huh, there was an Error generating your resume.</h1>
-          <p className="text-lg">Accept our apologies. Please try again later.</p>
+          <h1 className="pl-2 border-l-8 border-red-600">
+            Huh, there was an Error generating your resume.
+          </h1>
+          <p className="text-lg">
+            Accept our apologies. Please try again later.
+          </p>
         </div>
       </section>
-    )
+    );
   }
-  //loading screen while resume is being generated
+
   if (isSubmitting) {
     return (
       <div className="z-20 fixed left-0 top-0 w-full h-full bg-gray-200 flex items-center justify-center">
@@ -239,7 +194,7 @@ export default function ResumeDetails() {
   }
 
   return (
-    <section className="flex container items-center justify-center flex-col p-4 gap-4 mx-auto my-10 max-w-full flex-wrap box-border">
+    <section className="flex container items-center justify-center flex-col p-4 gap-4 mx-auto my-10 max-w-full h-fullflex-wrap box-border">
       {showConfirmationModal && (
         <Modal>
           <button
@@ -273,60 +228,113 @@ export default function ResumeDetails() {
           </div>
         </Modal>
       )}
-      <form className="flex flex-col gap-4 max-w-full" onSubmit={submitDetails}>
-        <h1 className="text-xl mb-1 text-left w-full">Your Details</h1>
-        <hr className="divider" />
-        <ContactInfoSection add={addContactInfo} />
-        <hr className="divider" />
-        <div className="flex flex-wrap w-full gap-4">
-          <SkillsSection
-            allowNew={shouldAllowNewSkill}
-            remove={removeSkills}
-            add={addUserSkills}
-            currentData={userSkills}
-          />
-          <LanguageSection
-            allowNew={shouldAllowNewLanguage}
-            remove={removeLanguage}
-            add={addUserLanguage}
-            currentData={userLanguages}
-          />
-        </div>
-        <hr className="divider" />
-        <div className="flex flex-wrap w-full gap-4">
-          <ProjectsSection
-            visible={showAddProject}
-            allowNew={shouldAllowNewProject}
-            add={addUserProject}
-            remove={removeProject}
-            toggleShowAddProject={toggleShowAddProject}
-            currentData={userProject}
-          />
-          <EducationSection
-            visible={showAddEducation}
-            allowNew={shouldAllowNewEducation}
-            add={addUserEducation}
-            remove={removeEducation}
-            toggleShowAddEducation={toggleShowAddEducation}
-            currentData={userEducation}
-          />
-          <ExperienceSection
-            visible={showAddExperience}
-            allowNew={shouldAllowNewExperience}
-            remove={removeExperience}
-            add={addUserExperience}
-            toggleShowAddExperience={toggleShowAddExperience}
-            currentData={userExperience}
-          />
-        </div>
-        <hr className="divider" />
-        <button
-          type="submit"
-          className="action-btn flex gap-1 items-center justify-center"
-        >
-          Generate Resume
-        </button>
-      </form>
+      <div className="flex flex-col flex-1 h-full mx-auto w-full max-w-[800px] gap-4">
+        {stage === "basic" && (
+          <>
+            <h1 className="text-xl mb-1 text-left w-full">Basic Information</h1>
+            <hr className="divider" />
+            <ContactInfoSection
+              add={(data) => updateUserData("contact", data)}
+            />
+          </>
+        )}
+
+        {stage === "skills" && (
+          <>
+            <h1 className="text-xl mb-1 text-left w-full">Skills</h1>
+            <hr className="divider" />
+            <SkillsSection
+              allowNew={() => shouldAllowNewItem("skills", 20)}
+              remove={(id) => removeItem("skills", id)}
+              add={(data) => updateUserData("skills", data, true)}
+              currentData={userData.skills}
+            />
+          </>
+        )}
+
+        {stage === "languages" && (
+          <>
+            <h1 className="text-xl mb-1 text-left w-full">Languages</h1>
+            <hr className="divider" />
+            <LanguageSection
+              allowNew={() => shouldAllowNewItem("languages", 5)}
+              remove={(id) => removeItem("languages", id)}
+              add={(data) => updateUserData("languages", data, true)}
+              currentData={userData.languages}
+            />
+          </>
+        )}
+
+        {stage === "experience" && (
+          <>
+            <h1 className="text-xl mb-1 text-left w-full">Experience</h1>
+            <hr className="divider" />
+            <ExperienceSection
+              visible={showAddExperience}
+              allowNew={() => shouldAllowNewItem("experience", 3)}
+              remove={(id) => removeItem("experience", id)}
+              add={(data) => updateUserData("experience", data, true)}
+              toggleShowAddExperience={() =>
+                toggleVisibility(setShowAddExperience)
+              }
+              currentData={userData.experience}
+            />
+          </>
+        )}
+
+        {stage === "education" && (
+          <>
+            <h1 className="text-xl mb-1 text-left w-full">Education</h1>
+            <hr className="divider" />
+            <EducationSection
+              visible={showAddEducation}
+              allowNew={() => shouldAllowNewItem("education", 3)}
+              add={(data) => updateUserData("education", data, true)}
+              remove={(id) => removeItem("education", id)}
+              toggleShowAddEducation={() =>
+                toggleVisibility(setShowAddEducation)
+              }
+              currentData={userData.education}
+            />
+          </>
+        )}
+
+        {stage === "projects" && (
+          <>
+            <h1 className="text-xl mb-1 text-left w-full">Projects</h1>
+            <hr className="divider" />
+            <ProjectsSection
+              visible={showAddProject}
+              allowNew={() => shouldAllowNewItem("projects", 3)}
+              add={(data) => updateUserData("projects", data, true)}
+              remove={(id) => removeItem("projects", id)}
+              toggleShowAddProject={() => toggleVisibility(setShowAddProject)}
+              currentData={userData.projects}
+            />
+          </>
+        )}
+      </div>
+      <hr className="divider" />
+
+      <div className="flex gap-4">
+        {stage !== "basic" && (
+          <button className="action-btn" type="button" onClick={prevStage}>
+            Previous
+          </button>
+        )}
+        {stage !== "projects" ? (
+          <button className="action-btn" type="button" onClick={nextStage}>
+            Next
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="action-btn flex gap-1 items-center justify-center"
+          >
+            Generate Resume
+          </button>
+        )}
+      </div>
     </section>
   );
 }

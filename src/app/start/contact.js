@@ -54,7 +54,6 @@ export default function ContactInfoSection({ add }) {
     <div className="flex flex-col w-full flex-wrap gap-4">
       <div className="flex flex-col">
         <h2 className="resume-section">basic information</h2>
-        <div className="flex flex-wrap gap-4">
           <label>
             name
             <input
@@ -86,11 +85,9 @@ export default function ContactInfoSection({ add }) {
               value={data.summary}
             />
           </label>
-        </div>
-      </div>
+      </div> 
       <div className="flex flex-col">
         <h2 className="resume-section">contact information</h2>
-        <div className="flex flex-wrap gap-4">
           <label>
             location
             <input
@@ -142,7 +139,6 @@ export default function ContactInfoSection({ add }) {
             />
           </label>
         </div>
-      </div>
     </div>
   );
 }
