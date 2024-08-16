@@ -22,7 +22,7 @@ label {
   @apply my-2 flex flex-col flex-wrap text-xs capitalize font-extrabold text-slate-900 max-w-[70vw]
 }
 
-input[type=text], input[type=email], input[type=url] {
+input[type=text], input[type=email], input[type=url], input[type=tel], input[type=number] {
   @apply font-normal w-[250px] max-w-full text-base border border-gray-300 rounded p-1 hover:border-sky-900 focus:border-sky-900 focus:outline-none;
 }
 

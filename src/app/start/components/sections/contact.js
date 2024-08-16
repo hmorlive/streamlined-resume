@@ -31,6 +31,15 @@ export default function ContactSection() {
         />
       </div>
       <div>
+        <label htmlFor="contact.phone">Phone</label>
+        <Field name="contact.phone" type="tel" className="input-field" />
+        <ErrorMessage
+          name="contact.phone"
+          component="div"
+          className="p-1 text-red-600 rounded text-xs border border-red-600"
+        />
+      </div>
+      <div>
         <label htmlFor="contact.email">Email</label>
         <Field name="contact.email" type="email" className="input-field" />
         <ErrorMessage

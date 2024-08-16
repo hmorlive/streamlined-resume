@@ -33,6 +33,7 @@ export default function ResumeForm() {
         contact: {
           name: "",
           email: "",
+          phone: "",
           location: "",
           github: "",
           website: "",
@@ -49,6 +50,10 @@ export default function ResumeForm() {
     contact: Yup.object({
       name: Yup.string().required("Name is required"),
       title: Yup.string().required("Title is required"),
+      phone: Yup.string().matches(
+        /^\d{10}$/,
+        "Enter a valid 10-digit phone number"
+      ),
       email: Yup.string().email("Invalid email address"),
       location: Yup.string(),
       github: Yup.string().matches(/^@[\w-]+$/, "Enter a valid GitHub handle."),
