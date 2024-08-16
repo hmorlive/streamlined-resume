@@ -97,11 +97,6 @@ export default function Navigation() {
                 </Link>
               </li>
               <li onClick={closeMenuAndNavigate}>
-                <Link href={"about  "} className={`hover:opacity-80`}>
-                  About
-                </Link>
-              </li>
-              <li onClick={closeMenuAndNavigate}>
                 <Link
                   href={"start"}
                   className="py-3 bg-blue-700 hover:bg-blue-600 text-white rounded px-6 font-bold"

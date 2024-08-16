@@ -31,9 +31,6 @@ function CTA() {
           <Link href={"/start"} className="action-btn">
             Get Started
           </Link>
-          <Link href={"/about"} className="text-sm text-blue-600">
-            View sample
-          </Link>
           </div>
         </div>
         <img

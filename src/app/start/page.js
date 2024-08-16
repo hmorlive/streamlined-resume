@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import ContactSection from "./components/sections/contact";
@@ -13,7 +13,7 @@ import ResumePDF from "./components/renderer/render";
 
 export default function ResumeForm() {
   const [sectionIndex, setSectionIndex] = useState(0);
-  const [formData, setFormData] = useState(null); // Add state for form data
+  const [formData, setFormData] = useState(null);
 
   const sections = [
     { id: "contact", label: "Contact Information", component: ContactSection },
@@ -126,6 +126,12 @@ export default function ResumeForm() {
     window.location.reload();
   };
 
+  useEffect(() => {
+    if (formData) {
+      localStorage.setItem("resumeFormData", JSON.stringify(formData));
+    }
+  }, [formData]);
+
   return (
     <Formik
       initialValues={initialValues}
@@ -134,11 +140,6 @@ export default function ResumeForm() {
     >
       {({ values, isSubmitting, errors, setFieldValue }) => {
         const CurrentSection = sections[sectionIndex].component;
-
-        // save form data to local storage
-        useEffect(() => {
-          localStorage.setItem("resumeFormData", JSON.stringify(values));
-        }, [values]);
 
         return (
           <Form className="flex flex-col gap-4 w-full max-w-6xl mx-auto p-4 my-8">
@@ -187,13 +188,13 @@ export default function ResumeForm() {
                 </button>
               )}
 
-                  <button
-                    type="button"
-                    onClick={() => setFormData(values)} // Set formData to preview the PDF
-                    className="bg-blue-600 hover:bg-blue-700 flex items-center justify-center gap-2 w-32 sm:w-40 text-white px-4 sm:px-6 py-3 text-sm rounded"
-                  >
-                    Preview
-                  </button>
+              <button
+                type="button"
+                onClick={() => setFormData(values)} // Set formData to preview the PDF
+                className="bg-blue-600 hover:bg-blue-700 flex items-center justify-center gap-2 w-32 sm:w-40 text-white px-4 sm:px-6 py-3 text-sm rounded"
+              >
+                Preview
+              </button>
 
               {sectionIndex < sections.length - 1 && (
                 <button
@@ -203,7 +204,6 @@ export default function ResumeForm() {
                 >
                   Next
                 </button>
-              
               )}
               <button
                 type="button"
